@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/extensions/space_exs.dart';
 import 'package:todo_app/utils/app_colors.dart';
 import 'package:todo_app/utils/app_str.dart';
-import 'package:todo_app/views/home/widget/fab.dart';
+import 'package:todo_app/views/home/components/fab.dart';
+import 'package:todo_app/views/home/widget/task_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -28,16 +29,16 @@ class _HomeViewState extends State<HomeView> {
         height: double.infinity,
         child: Column(
           children: [
+            // App Bar
             Container(
               margin: const EdgeInsets.only(top: 60),
               width: double.infinity,
               height: 100,
-              color: Colors.red,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Progress Circle
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                     height: 30,
                     child: const CircularProgressIndicator(
@@ -48,9 +49,11 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                   ),
+
+                  // Space
                   25.w,
 
-                  // 
+                  // Top level task info
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +70,48 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   )
                 ],
+              ),
+            ),
+
+            // Divider
+            const Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Divider(
+                thickness: 2,
+                indent: 100,
+              ),
+            ),
+
+            // Tasks
+            SizedBox(
+              width: double.infinity,
+              height: 700,
+              // height: 745,
+              child: ListView.builder(
+                itemCount: 20,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                      direction: DismissDirection.horizontal,
+                      onDismissed: (_) {
+                        // remove item from list
+                      },
+                      background: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ),
+                          8.w,
+                          const Text(AppStr.deleteTask,
+                              style: TextStyle(color: Colors.red))
+                        ],
+                      ),
+                      
+                      key: Key(index.toString()),
+                      child: const TaskWidget());
+                },
               ),
             )
           ],
