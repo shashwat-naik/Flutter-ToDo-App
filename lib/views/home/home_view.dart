@@ -1,9 +1,14 @@
+import 'dart:developer';
+import 'package:todo_app/utils/constants.dart';
+import 'package:lottie/lottie.dart';
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/extensions/space_exs.dart';
 import 'package:todo_app/utils/app_colors.dart';
 import 'package:todo_app/utils/app_str.dart';
 import 'package:todo_app/views/home/components/fab.dart';
 import 'package:todo_app/views/home/widget/task_widget.dart';
+import 'package:animate_do/animate_do.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -13,6 +18,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final List<int> testing = [2, 323, 23];
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -87,32 +93,53 @@ class _HomeViewState extends State<HomeView> {
               width: double.infinity,
               height: 700,
               // height: 745,
-              child: ListView.builder(
-                itemCount: 20,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                      direction: DismissDirection.horizontal,
-                      onDismissed: (_) {
-                        // remove item from list
-                      },
-                      background: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.delete_outline,
-                            color: Colors.red,
+              child: testing.isNotEmpty
+              
+                  ? ListView.builder(
+                      itemCount: testing.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Dismissible(
+                            direction: DismissDirection.horizontal,
+                            onDismissed: (_) {
+                              // remove item from list
+                            },
+                            background: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                                8.w,
+                                const Text(AppStr.deleteTask,
+                                    style: TextStyle(color: Colors.red))
+                              ],
+                            ),
+                            key: Key(index.toString()),
+                            child: const TaskWidget());
+                      })
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FadeIn(
+                          child: SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: Lottie.asset(
+                              lottieURL,
+                              animate: testing.isNotEmpty ? false : true,
+                            ),
                           ),
-                          8.w,
-                          const Text(AppStr.deleteTask,
-                              style: TextStyle(color: Colors.red))
-                        ],
-                      ),
-                      
-                      key: Key(index.toString()),
-                      child: const TaskWidget());
-                },
-              ),
+                        ),
+                        FadeInUp(
+                          from: 30,
+                          child: const Text(
+                            AppStr.doneAllTask,
+                          ),
+                        )
+                      ],
+                    ),
             )
           ],
         ),
