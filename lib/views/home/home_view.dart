@@ -1,3 +1,4 @@
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:todo_app/utils/constants.dart';
 import 'package:lottie/lottie.dart';
 
@@ -6,6 +7,7 @@ import 'package:todo_app/extensions/space_exs.dart';
 import 'package:todo_app/utils/app_colors.dart';
 import 'package:todo_app/utils/app_str.dart';
 import 'package:todo_app/views/home/components/fab.dart';
+import 'package:todo_app/views/home/components/home_app_bar.dart';
 import 'package:todo_app/views/home/widget/task_widget.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -17,20 +19,34 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  GlobalKey<SliderDrawerState> drawerKey = GlobalKey<SliderDrawerState>();
   final List<int> testing = [];
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
 
-      // FAB
-      floatingActionButton: const Fab(),
+        // FAB
+        floatingActionButton: const Fab(),
 
-      // Body
-      body: _buildHomeBody(textTheme),
-    );
+        // Body
+        body: SliderDrawer(
+          key: drawerKey,
+          isDraggable: true,
+          animationDuration: 1000,
+          // Drawer
+          slider: Container(
+            color: Colors.red,
+          ),
+
+          appBar: HomeAppBar(
+            drawerKey: drawerKey,
+          ),
+          // Main Body
+          child: _buildHomeBody(textTheme),
+        ));
   }
 
 // Home Body
@@ -96,10 +112,10 @@ class _HomeViewState extends State<HomeView> {
           // Tasks
           SizedBox(
             width: double.infinity,
-            height: 700,
+            height: 648,
             // height: 745,
             child: testing.isNotEmpty
-              // Task not complete
+                // Task not complete
                 ? ListView.builder(
                     itemCount: testing.length,
                     scrollDirection: Axis.vertical,
@@ -124,7 +140,7 @@ class _HomeViewState extends State<HomeView> {
                           key: Key(index.toString()),
                           child: const TaskWidget());
                     })
-                    // Task completed
+                // Task completed
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
