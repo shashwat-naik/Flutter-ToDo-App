@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
         // Body
         body: SliderDrawer(
           key: drawerKey,
-          isDraggable: true,
+          isDraggable: false,
           animationDuration: 1000,
           // Drawer
           slider: Container(
